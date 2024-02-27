@@ -13,3 +13,14 @@
 get_template_part('partials/part', 'one'); //1-слаг с осовным именем (обязятельный), 2-спецификация(можно передавать динамические данные), 3-масив доп данных
 ?> -->
 <?php wp_body_open(); ?>
+<?php 
+wp_nav_menu(
+	array(
+		'theme_location' => 'header_nav',
+		'menu_class'=> 'menu_class',
+		'container' => 'div',
+	)
+);
+
+get_search_form();
+?>

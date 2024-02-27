@@ -49,14 +49,14 @@ add_action('wp_head', 'geniuscourseslde_show_meta');
 
 
 //* третрий параметр у хуков это приоритет, чем больше приоритет тем нижу будет расположен скрипт в дом дереве
-function geniuscourseslde_show_exText1(){
-	echo"Hello 1";
-};
-function geniuscourseslde_show_exText2(){
-	echo"Hello 2";
-};
-add_action('wp_footer', 'geniuscourseslde_show_exText1', 100);
-add_action('wp_footer', 'geniuscourseslde_show_exText2', 10);
+// function geniuscourseslde_show_exText1(){
+// 	echo"Hello 1";
+// };
+// function geniuscourseslde_show_exText2(){
+// 	echo"Hello 2";
+// };
+// add_action('wp_footer', 'geniuscourseslde_show_exText1', 100);
+// add_action('wp_footer', 'geniuscourseslde_show_exText2', 10);
 
 
 //для вывода класов на разных страницах
@@ -75,6 +75,30 @@ return $classes;
 };
 
 add_filter('body_class', 'geniuscourseslde_body_class');
+
+
+function geniuscourseslde_theme_init(){
+	register_nav_menus(array(
+		'header_nav' => 'Header Navigation',
+		'footer_nav' => 'Footer Navigation'
+	));
+
+	add_theme_support(
+		'html5',
+		array(
+			'search-form',
+			'comment-form',
+			'comment-list',
+			'gallery',
+			'caption',
+			'style',
+			'script',
+		)
+	);
+};
+
+add_action('after_setup_theme', 'geniuscourseslde_theme_init', 0);
+
 
 if ( ! defined( '_S_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
@@ -115,29 +139,13 @@ function geniuscourseslde_setup() {
 		*/
 	add_theme_support( 'post-thumbnails' );
 
-	// This theme uses wp_nav_menu() in one location.
-	register_nav_menus(
-		array(
-			'menu-1' => esc_html__( 'Primary', 'geniuscourseslde' ),
-		)
-	);
+	
 
 	/*
 		* Switch default core markup for search form, comment form, and comments
 		* to output valid HTML5.
 		*/
-	add_theme_support(
-		'html5',
-		array(
-			'search-form',
-			'comment-form',
-			'comment-list',
-			'gallery',
-			'caption',
-			'style',
-			'script',
-		)
-	);
+	
 
 	// Set up the WordPress core custom background feature.
 	add_theme_support(
