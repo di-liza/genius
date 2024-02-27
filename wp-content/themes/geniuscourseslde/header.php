@@ -23,4 +23,15 @@ wp_nav_menu(
 );
 
 get_search_form();
+
+$name = 'Alex Socfvf aka COdRVB';
+
 ?>
+
+<!-- <input name="author" value="<?php echo esc_attr($name); ?>"/>  -->
+<!-- <?php echo esc_html($name); ?> -->
+<a href="<?php echo esc_url(home_url("/")) ;?>">Home</a>
+<!-- esc_attr()  чистит код, проверяет нет ли там мусора котрый поламает разметку
+ esc_html()  для чистки тегов 
+  esc_url()  для чистки ссылок 
+-->
