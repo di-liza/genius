@@ -7,6 +7,75 @@
  * @package GeniusCoursesLDE
  */
 
+function geniuscourseslde_enqueue_scripts(){
+	//? ХУКИ enqueue & register
+	//wp_enqueue сразу выводят на сайт, wp_register_...() - регестрирут в системе указанный id, далее можно вызвать в удобном месте
+	//*styles
+// wp_enqueue_style('geniuscourseslde-general',get_template_directory_uri().'./assets/css/general.css',array(), '1.0', 'all' );//1-id, 2-path func, 3- dependencies array:array('name'), 4-script version, 5-media (для чего)
+// wp_enqueue_style('animate');//если библиотека
+
+//* Js scripts
+// wp_enqueue_script('geniuscourseslde-script', get_template_directory_uri().'./assets/js/script.js', array(), '1.0', true);//1-id (название проэкта и название файла после тире), 2-path, 3-libs scripts array, 4-version, 5-place (где хотим подгружать файл, if true => footer)  
+
+// регестрация id:
+wp_register_style('geniuscourseslde-general',get_template_directory_uri().'./assets/css/general.css',array(), '1.0', 'all' );//1-id, 2-path func, 3- dependencies array:array('name'), 4-script version, 5-media (для чего)
+// wp_register_style('animate');//если библиотека
+
+//* Js scripts
+wp_register_script('geniuscourseslde-script', get_template_directory_uri().'./assets/js/script.js', array(), '1.0', true);//1-id (название проэкта и название файла после тире), 2-path, 3-libs scripts array, 4-version, 5-place (где хотим подгружать файл, if true => footer)  
+
+// если хотим подключить те что уже зарегестрированны, указываем только id
+wp_enqueue_style('geniuscourseslde-general');
+// wp_enqueue_script('geniuscourseslde-script');
+
+//*запускать хуки можно по условию:
+// if(is_singular()) {
+// 	// wp_enqueue_script('geniuscourseslde-script');
+// }; //если мы находимся на активной, а не на архивной странице
+
+wp_enqueue_script('thickbox');
+
+// для тогог что бы осталась возможность ответа на коментарий
+if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+		wp_enqueue_script( 'comment-reply' );
+	}
+};
+add_action('wp_enqueue_scripts', 'geniuscourseslde_enqueue_scripts'); //1-хук к котрому цепляем, 2- что хотим вывести, 3-приооритет;
+
+function geniuscourseslde_show_meta(){
+	echo"<meta name='author' content='markus'>";
+};
+add_action('wp_head', 'geniuscourseslde_show_meta');
+
+
+//* третрий параметр у хуков это приоритет, чем больше приоритет тем нижу будет расположен скрипт в дом дереве
+function geniuscourseslde_show_exText1(){
+	echo"Hello 1";
+};
+function geniuscourseslde_show_exText2(){
+	echo"Hello 2";
+};
+add_action('wp_footer', 'geniuscourseslde_show_exText1', 100);
+add_action('wp_footer', 'geniuscourseslde_show_exText2', 10);
+
+
+//для вывода класов на разных страницах
+function geniuscourseslde_body_class($classes){
+//$classes переменная для класов wordpress
+// $classes[]= 'main_class';
+
+//is_front() если это главная страница
+if(is_front_page()){
+$classes[]= 'main_class';
+}else if(is_singular()){
+	$classes[]= 'extra_class';
+};
+
+return $classes;
+};
+
+add_filter('body_class', 'geniuscourseslde_body_class');
+
 if ( ! defined( '_S_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
 	define( '_S_VERSION', '1.0.0' );
@@ -134,20 +203,6 @@ function geniuscourseslde_widgets_init() {
 }
 add_action( 'widgets_init', 'geniuscourseslde_widgets_init' );
 
-/**
- * Enqueue scripts and styles.
- */
-function geniuscourseslde_scripts() {
-	wp_enqueue_style( 'geniuscourseslde-style', get_stylesheet_uri(), array(), _S_VERSION );
-	wp_style_add_data( 'geniuscourseslde-style', 'rtl', 'replace' );
-
-	wp_enqueue_script( 'geniuscourseslde-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
-
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
-}
-add_action( 'wp_enqueue_scripts', 'geniuscourseslde_scripts' );
 
 /**
  * Implement the Custom Header feature.
